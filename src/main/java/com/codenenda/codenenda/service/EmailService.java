@@ -4,6 +4,7 @@ import com.codenenda.codenenda.domain.User;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,15 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    @Value("${link.link}")
+    private String l;
+
+
     public void sendVerificationEmail(User user) {
         try {
             String to = user.getEmail();
             String subject = "Codenenda 이메일 인증";
-            String link = "http://localhost:8080/auth/verify?token=" + user.getToken();
+            String link = l + "/auth/verify?token=" + user.getToken();
 
             String body = "<h1>안녕하세요, Codenenda입니다.</h1>" +
                     "<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>" +
